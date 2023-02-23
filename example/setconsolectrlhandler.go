@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/Wraken/w32"
+	"github.com/wraken/w32"
 )
 
 func CtrlHandler(fdwCtrlType w32.DWORD) int32 {

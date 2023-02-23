@@ -8,7 +8,7 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/Wraken/w32"
+	"github.com/wraken/w32"
 )
 
 type Player struct {

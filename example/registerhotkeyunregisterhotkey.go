@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/Wraken/w32"
+	"github.com/wraken/w32"
 )
 
 // Wait for a hotkey event to occur.

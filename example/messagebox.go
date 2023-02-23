@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Wraken/w32"
+	"github.com/wraken/w32"
 )
 
 // A simple message box example

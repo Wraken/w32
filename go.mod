@@ -1,3 +1,3 @@
-module github.com/Wraken/w32
+module github.com/wraken/w32
 
 go 1.14
