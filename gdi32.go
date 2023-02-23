@@ -35,6 +35,7 @@ var (
 	procExtCreatePen              = modgdi32.NewProc("ExtCreatePen")
 	procGetCurrentObject          = modgdi32.NewProc("GetCurrentObject")
 	procGetDeviceCaps             = modgdi32.NewProc("GetDeviceCaps")
+	procGetDIBits                 = modgdi32.NewProc("GetDIBits")
 	procGetEnhMetaFile            = modgdi32.NewProc("GetEnhMetaFileW")
 	procGetEnhMetaFileHeader      = modgdi32.NewProc("GetEnhMetaFileHeader")
 	procGetEnhMetaFilePixelFormat = modgdi32.NewProc("GetEnhMetaFilePixelFormat")
@@ -85,6 +86,20 @@ func GetDeviceCaps(hdc HDC, index int) int {
 	ret, _, _ := procGetDeviceCaps.Call(
 		uintptr(hdc),
 		uintptr(index))
+
+	return int(ret)
+}
+
+func GetDIBits(hcd HDC, hbm HBITMAP, start, cLines uint32, lpvBits LPCVOID, lpbmi LPBITMAPINFO, usage uint32) int {
+	ret, _, _ := procGetDIBits.Call(
+		uintptr(hcd),
+		uintptr(hbm),
+		uintptr(start),
+		uintptr(cLines),
+		uintptr(lpvBits),
+		uintptr(lpbmi),
+		uintptr(usage),
+	)
 
 	return int(ret)
 }

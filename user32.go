@@ -99,6 +99,7 @@ var (
 	procPeekMessage                   = moduser32.NewProc("PeekMessageW")
 	procPostMessage                   = moduser32.NewProc("PostMessageW")
 	procPostQuitMessage               = moduser32.NewProc("PostQuitMessage")
+	procPrintWindow                   = moduser32.NewProc("PrintWindow")
 	procPtInRect                      = moduser32.NewProc("PtInRect")
 	procRegisterClassEx               = moduser32.NewProc("RegisterClassExW")
 	procRegisterHotKey                = moduser32.NewProc("RegisterHotKey")
@@ -401,6 +402,16 @@ func DefDlgProc(hwnd HWND, msg uint32, wParam, lParam uintptr) uintptr {
 func PostQuitMessage(exitCode int) {
 	procPostQuitMessage.Call(
 		uintptr(exitCode))
+}
+
+func PrintWindow(hwnd HWND, hdc HDC, nFlags uint32) int {
+	ret, _, _ := procPrintWindow.Call(
+		uintptr(hwnd),
+		uintptr(hdc),
+		uintptr(nFlags),
+	)
+
+	return int(ret)
 }
 
 func GetMessage(msg *MSG, hwnd HWND, msgFilterMin, msgFilterMax uint32) int {
@@ -1115,8 +1126,8 @@ func ChangeDisplaySettingsEx(szDeviceName *uint16, devMode *DEVMODE, hwnd HWND, 
 	return int32(ret)
 }
 
-//Synthesizes keystrokes, mouse motions, and button clicks.
-//see https://msdn.microsoft.com/en-us/library/windows/desktop/ms646310(v=vs.85).aspx
+// Synthesizes keystrokes, mouse motions, and button clicks.
+// see https://msdn.microsoft.com/en-us/library/windows/desktop/ms646310(v=vs.85).aspx
 func SendInput(inputs []INPUT) (err error) {
 	var validInputs []C.INPUT
 
@@ -1150,7 +1161,7 @@ func SendInput(inputs []INPUT) (err error) {
 	return
 }
 
-//Simplifies SendInput for Keyboard related keys. Supports alphanumeric
+// Simplifies SendInput for Keyboard related keys. Supports alphanumeric
 func SendInputString(input string) (err error) {
 	var inputs []INPUT
 	b := make([]byte, 3)
@@ -1230,8 +1241,8 @@ func CallNextHookEx(hhk HHOOK, nCode int, wParam WPARAM, lParam LPARAM) LRESULT 
 	return LRESULT(ret)
 }
 
-//Defines a system-wide hotkey.
-//See https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx
+// Defines a system-wide hotkey.
+// See https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx
 func RegisterHotKey(hwnd HWND, id int, fsModifiers uint, vkey uint) (err error) {
 	_, _, err = procRegisterHotKey.Call(
 		uintptr(hwnd),
@@ -1246,8 +1257,8 @@ func RegisterHotKey(hwnd HWND, id int, fsModifiers uint, vkey uint) (err error) 
 	return
 }
 
-//Defines a system-wide hotkey.
-//See https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx
+// Defines a system-wide hotkey.
+// See https://msdn.microsoft.com/en-us/library/windows/desktop/ms646309(v=vs.85).aspx
 func UnregisterHotKey(hwnd HWND, id int) (err error) {
 	_, _, err = procUnregisterHotKey.Call(
 		uintptr(hwnd),

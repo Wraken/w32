@@ -212,6 +212,7 @@ type (
 	HWND            HANDLE
 	LPARAM          uintptr
 	LPCVOID         unsafe.Pointer
+	LPBITMAPINFO    unsafe.Pointer
 	LRESULT         uintptr
 	PVOID           unsafe.Pointer
 	QPC_TIME        uint64
@@ -939,7 +940,7 @@ type WNDENUMPROC func(HWND, LPARAM) LRESULT
 
 type MONITORENUMPROC func(HMONITOR, HDC, RECT, LPARAM) bool
 
-//https://msdn.microsoft.com/en-us/library/windows/desktop/aa366775(v=vs.85).aspx
+// https://msdn.microsoft.com/en-us/library/windows/desktop/aa366775(v=vs.85).aspx
 type MEMORY_BASIC_INFORMATION struct {
 	BaseAddress       PVOID
 	AllocationBase    PVOID
@@ -1049,8 +1050,9 @@ type EVENT_TRACE_PROPERTIES struct {
 }
 
 // nt!_ALPC_MESSAGE_ATTRIBUTES
-//  +0x000 AllocatedAttributes : Uint4B
-//  +0x004 ValidAttributes  : Uint4B
+//
+//	+0x000 AllocatedAttributes : Uint4B
+//	+0x004 ValidAttributes  : Uint4B
 type ALPC_MESSAGE_ATTRIBUTES struct {
 	AllocatedAttributes uint32
 	ValidAttributes     uint32
@@ -1072,17 +1074,19 @@ type ALPC_HANDLE_ATTR struct {
 }
 
 // nt!_CLIENT_ID
-//  +0x000 UniqueProcess    : Ptr64 Void
-//  +0x008 UniqueThread     : Ptr64 Void
+//
+//	+0x000 UniqueProcess    : Ptr64 Void
+//	+0x008 UniqueThread     : Ptr64 Void
 type CLIENT_ID struct {
 	UniqueProcess uintptr
 	UniqueThread  uintptr
 }
 
 // nt!_UNICODE_STRING
-//  +0x000 Length           : Uint2B
-//  +0x002 MaximumLength    : Uint2B
-//  +0x008 Buffer           : Ptr64 Uint2B
+//
+//	+0x000 Length           : Uint2B
+//	+0x002 MaximumLength    : Uint2B
+//	+0x008 Buffer           : Ptr64 Uint2B
 type UNICODE_STRING struct {
 	Length        uint16
 	MaximumLength uint16
@@ -1091,12 +1095,13 @@ type UNICODE_STRING struct {
 }
 
 // nt!_OBJECT_ATTRIBUTES
-//  +0x000 Length           : Uint4B
-//  +0x008 RootDirectory    : Ptr64 Void
-//  +0x010 ObjectName       : Ptr64 _UNICODE_STRING
-//  +0x018 Attributes       : Uint4B
-//  +0x020 SecurityDescriptor : Ptr64 Void
-//  +0x028 SecurityQualityOfService : Ptr64 Void
+//
+//	+0x000 Length           : Uint4B
+//	+0x008 RootDirectory    : Ptr64 Void
+//	+0x010 ObjectName       : Ptr64 _UNICODE_STRING
+//	+0x018 Attributes       : Uint4B
+//	+0x020 SecurityDescriptor : Ptr64 Void
+//	+0x028 SecurityQualityOfService : Ptr64 Void
 type OBJECT_ATTRIBUTES struct {
 	Length                   uint32
 	_                        [4]byte // align to 0x08
@@ -1110,13 +1115,14 @@ type OBJECT_ATTRIBUTES struct {
 
 // cf: http://j00ru.vexillium.org/?p=502 for legacy RPC
 // nt!_PORT_MESSAGE
-//    +0x000 u1               : <unnamed-tag>
-//    +0x004 u2               : <unnamed-tag>
-//    +0x008 ClientId         : _CLIENT_ID
-//    +0x008 DoNotUseThisField : Float
-//    +0x018 MessageId        : Uint4B
-//    +0x020 ClientViewSize   : Uint8B
-//    +0x020 CallbackId       : Uint4B
+//
+//	+0x000 u1               : <unnamed-tag>
+//	+0x004 u2               : <unnamed-tag>
+//	+0x008 ClientId         : _CLIENT_ID
+//	+0x008 DoNotUseThisField : Float
+//	+0x018 MessageId        : Uint4B
+//	+0x020 ClientViewSize   : Uint8B
+//	+0x020 CallbackId       : Uint4B
 type PORT_MESSAGE struct {
 	DataLength     uint16 // These are the two unnamed unions
 	TotalLength    uint16 // without Length and ZeroInit
@@ -1150,16 +1156,17 @@ type SECURITY_QUALITY_OF_SERVICE struct {
 const SECURITY_QOS_SIZE = 12
 
 // nt!_ALPC_PORT_ATTRIBUTES
-//  +0x000 Flags            : Uint4B
-//  +0x004 SecurityQos      : _SECURITY_QUALITY_OF_SERVICE
-//  +0x010 MaxMessageLength : Uint8B
-//  +0x018 MemoryBandwidth  : Uint8B
-//  +0x020 MaxPoolUsage     : Uint8B
-//  +0x028 MaxSectionSize   : Uint8B
-//  +0x030 MaxViewSize      : Uint8B
-//  +0x038 MaxTotalSectionSize : Uint8B
-//  +0x040 DupObjectTypes   : Uint4B
-//  +0x044 Reserved         : Uint4B
+//
+//	+0x000 Flags            : Uint4B
+//	+0x004 SecurityQos      : _SECURITY_QUALITY_OF_SERVICE
+//	+0x010 MaxMessageLength : Uint8B
+//	+0x018 MemoryBandwidth  : Uint8B
+//	+0x020 MaxPoolUsage     : Uint8B
+//	+0x028 MaxSectionSize   : Uint8B
+//	+0x030 MaxViewSize      : Uint8B
+//	+0x038 MaxTotalSectionSize : Uint8B
+//	+0x040 DupObjectTypes   : Uint4B
+//	+0x044 Reserved         : Uint4B
 type ALPC_PORT_ATTRIBUTES struct {
 	Flags               uint32
 	SecurityQos         SECURITY_QUALITY_OF_SERVICE
@@ -1308,22 +1315,22 @@ type SYSTEM_INFO struct {
 }
 
 type NOTIFYICONDATAA struct {
-	cbSize DWORD
-	hWnd HWND
-	uID uint32
-	uFlags uint32
+	cbSize           DWORD
+	hWnd             HWND
+	uID              uint32
+	uFlags           uint32
 	uCallbackMessage uint32
-	hIcon HICON
-	szTip [64]int8
-	dwState DWORD
-	dwStateMask DWORD
-	szInfo [256]int8
-	uTimeout uint32
-	uVersion uint32
-	szInfoTitle [256]int8
-	dwInfoFlags DWORD
-	guidItem GUID
-	hBalloonIcon HICON
+	hIcon            HICON
+	szTip            [64]int8
+	dwState          DWORD
+	dwStateMask      DWORD
+	szInfo           [256]int8
+	uTimeout         uint32
+	uVersion         uint32
+	szInfoTitle      [256]int8
+	dwInfoFlags      DWORD
+	guidItem         GUID
+	hBalloonIcon     HICON
 }
 
 type MOUSEHOOKSTRUCT struct {
@@ -1340,4 +1347,3 @@ type MSLLHOOKSTRUCT struct {
 	Time        DWORD
 	DwExtraInfo ULONG_PTR
 }
-
