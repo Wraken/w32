@@ -4,10 +4,11 @@ import (
 	"bytes"
 	"encoding/binary"
 	"fmt"
-	"github.com/JamesHovious/w32"
 	"strings"
 	"time"
 	"unsafe"
+
+	"github.com/Wraken/w32"
 )
 
 type Player struct {
@@ -50,7 +51,7 @@ func GetPlayerMemory(handle w32.HANDLE, addr string) (player Player) {
 	return
 }
 
-//This is an example to show how to read process memory and convert it to a struct
+// This is an example to show how to read process memory and convert it to a struct
 func main() {
 	for {
 		processAddr, err := w32.HexToUint32("00BEF28")

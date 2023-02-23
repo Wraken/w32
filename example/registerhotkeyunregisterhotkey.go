@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/JamesHovious/w32"
+
+	"github.com/Wraken/w32"
 )
 
-//Wait for a hotkey event to occur.
+// Wait for a hotkey event to occur.
 func waitForInputLoop() (err error) {
 	var msg w32.MSG
 	quit := false
@@ -31,7 +32,7 @@ func waitForInputLoop() (err error) {
 	return
 }
 
-//This shows how to register and unregister a hotkey
+// This shows how to register and unregister a hotkey
 func main() {
 	var err error
 	err = w32.RegisterHotKey(0, 1, w32.MOD_NOREPEAT, 0x31) //Bind the 1 key to the global hotkey 1

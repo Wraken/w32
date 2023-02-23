@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/JamesHovious/w32"
+
+	"github.com/Wraken/w32"
 )
 
 func main() {

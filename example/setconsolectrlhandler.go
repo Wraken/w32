@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/JamesHovious/w32"
+
+	"github.com/Wraken/w32"
 )
 
 func CtrlHandler(fdwCtrlType w32.DWORD) int32 {
@@ -25,7 +26,7 @@ func CtrlHandler(fdwCtrlType w32.DWORD) int32 {
 	return 0
 }
 
-//This code is purely experimental, it is returning with an exit stauts instead of calling my ctrlhandler.
+// This code is purely experimental, it is returning with an exit stauts instead of calling my ctrlhandler.
 func main() {
 	err := w32.SetConsoleCtrlHandler(CtrlHandler, 1)
 	if err != nil {

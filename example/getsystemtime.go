@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/JamesHovious/w32"
+
+	"github.com/Wraken/w32"
 )
 
-//A simple message box example
+// A simple message box example
 func main() {
 	time, err := w32.GetSystemTime()
 	if err != nil {

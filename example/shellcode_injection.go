@@ -1,11 +1,13 @@
+//go:build 386
 // +build 386
+
 package main
 
 import (
 	"syscall"
 	"unsafe"
 
-	"github.com/JamesHovious/w32"
+	"github.com/Wraken/w32"
 )
 
 // metasploit spawn notepad for x64

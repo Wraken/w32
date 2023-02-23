@@ -3,7 +3,7 @@ package main
 import (
 	"syscall"
 
-	"github.com/JamesHovious/w32"
+	"github.com/Wraken/w32"
 )
 
 func main() {

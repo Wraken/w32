@@ -10,7 +10,7 @@ import (
 	"syscall"
 	"unsafe"
 
-	"github.com/JamesHovious/w32"
+	"github.com/Wraken/w32"
 )
 
 func main() {
